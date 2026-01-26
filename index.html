@@ -1,1 +1,253 @@
-index.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NEET Gujarati Test Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+body{
+  background:linear-gradient(135deg,#020617,#0f172a,#020617);
+  color:#fff;
+  user-select:none;
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:99;
+  background:rgba(2,6,23,.8);
+  backdrop-filter:blur(10px);
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #1e293b;
+}
+header h2{
+  font-size:18px;
+  font-weight:700;
+}
+.owner{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.owner img{
+  width:22px;
+}
+
+/* CONTAINER */
+.container{
+  padding:25px;
+  max-width:600px;
+  margin:auto;
+}
+
+/* FOLDER CARDS */
+.folder{
+  background:linear-gradient(145deg,#1e293b,#020617);
+  border:1px solid #334155;
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:18px;
+  cursor:pointer;
+  transition:.4s;
+  position:relative;
+  overflow:hidden;
+}
+.folder::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.08),transparent);
+  transform:translateX(-100%);
+  transition:.6s;
+}
+.folder:hover::before{
+  transform:translateX(100%);
+}
+.folder:hover{
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 15px 40px rgba(0,0,0,.5);
+}
+.folder h3{
+  font-size:18px;
+  margin-bottom:6px;
+}
+.folder span{
+  font-size:13px;
+  color:#cbd5f5;
+}
+
+/* POPUP */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+.popup-box{
+  background:linear-gradient(145deg,#020617,#0f172a);
+  border:1px solid #334155;
+  padding:28px;
+  border-radius:22px;
+  text-align:center;
+  width:90%;
+  max-width:320px;
+  animation:pop .5s ease;
+}
+@keyframes pop{
+  from{transform:scale(.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.popup-box h3{
+  margin-bottom:15px;
+}
+.join{
+  display:block;
+  background:linear-gradient(135deg,#22c55e,#4ade80);
+  color:#020617;
+  padding:12px;
+  border-radius:12px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+.dismiss{
+  background:#ef4444;
+  border:none;
+  padding:12px;
+  width:100%;
+  border-radius:12px;
+  color:#fff;
+  font-weight:600;
+}
+
+/* TEST PAGE */
+#testPage{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:999;
+}
+#loader{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#000;
+  font-size:18px;
+  z-index:10;
+}
+iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+/* FOOTER SPACE */
+.space{height:40px}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<!-- POPUP -->
+<div class="popup" id="tgPopup">
+  <div class="popup-box">
+    <h3>🚀 Join Our Telegram Channel</h3>
+    <a class="join" href="https://t.me/YOUR_CHANNEL" target="_blank">Join Now</a>
+    <button class="dismiss" onclick="closePopup()">Dismiss</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <h2>NEET Gujarati Test Portal</h2>
+  <div class="owner">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
+    <a href="https://t.me/YOUR_TELEGRAM_ID" target="_blank">Owner</a>
+  </div>
+</header>
+
+<!-- HOME -->
+<div class="container" id="homePage">
+
+  <div class="folder" onclick="openTest(1)">
+    <h3>📘 Yakeen NEET Gujarati 2026</h3>
+    <span>Full test series • Pro level</span>
+  </div>
+
+  <div class="folder" onclick="openTest(2)">
+    <h3>📗 Lakshya NEET Gujarati 2026</h3>
+    <span>Target based mock tests</span>
+  </div>
+
+  <div class="folder" onclick="openTest(3)">
+    <h3>📕 Yakeen NEET Gujarati 2025</h3>
+    <span>Previous year batch</span>
+  </div>
+
+  <div class="folder" onclick="openTest(4)">
+    <h3>📙 Lakshya NEET Gujarati 2025</h3>
+    <span>Practice + revision</span>
+  </div>
+
+  <div class="folder" onclick="openTest(5)">
+    <h3>📒 Dropper NEET Gujarati</h3>
+    <span>Exclusive dropper tests</span>
+  </div>
+
+</div>
+
+<div class="space"></div>
+
+<!-- TEST PAGE -->
+<div id="testPage">
+  <div id="loader">Loading Test…</div>
+  <iframe id="testFrame"></iframe>
+</div>
+
+<script>
+window.onload=()=>setTimeout(()=>tgPopup.style.display="flex",300);
+function closePopup(){tgPopup.style.display="none"}
+
+function openTest(id){
+  homePage.style.display="none";
+  testPage.style.display="block";
+  loader.style.display="flex";
+
+  let links={
+    1:"https://quizard-new-v3-x-af208a2e8b47.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test",
+    2:"https://quizard-new-v3-x-af208a2e8b47.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test",
+    3:"https://quizard-new-v3-x-af208a2e8b47.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test",
+    4:"https://quizard-new-v3-x-af208a2e8b47.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test",
+    5:"https://quizard-new-v3-x-af208a2e8b47.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test"
+  };
+
+  testFrame.src=links[id];
+  testFrame.onload=()=>loader.style.display="none";
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.keyCode==123|| (e.ctrlKey&&e.shiftKey&&e.keyCode==73)|| (e.ctrlKey&&e.keyCode==85))
+    e.preventDefault();
+});
+</script>
+
+</body>
+</html>
