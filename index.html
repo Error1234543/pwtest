@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>NEET Gujarati Tests | Premium</title>
+<title>NEET Gujarati Tests | Ultra Pro Max</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,295 +11,228 @@
 <style>
 :root {
   --bg: #020617;
-  --card-bg: #1e293b;
-  --tg-blue: #0088cc; /* Official Telegram Blue */
-  --tg-blue-dark: #0077b5;
+  --card-bg: #0f172a;
+  --accent: #3b82f6;
+  --accent-glow: rgba(59, 130, 246, 0.6);
   --text: #f8fafc;
-  --dark-btn: #0f172a;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family: 'Poppins', sans-serif}
 
-body{
-  background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
+body {
+  background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
-  user-select:none;
+  overflow-x: hidden;
+  user-select: none;
 }
 
-/* HEADER */
-header{
-  position: sticky;
-  top: 0;
-  z-index: 99;
-  background: rgba(2, 6, 23, 0.85);
-  backdrop-filter: blur(12px);
-  padding: 12px;
-  display: flex;
-  gap: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+/* --- TELEGRAM POPUP --- */
+.tg-popup-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+  display: none; align-items: center; justify-content: center; z-index: 5000;
+  backdrop-filter: blur(8px);
+}
+.tg-popup-content {
+  background: linear-gradient(145deg, #1e293b, #070b14);
+  padding: 40px 30px; border-radius: 30px;
+  text-align: center; border: 1px solid var(--accent); max-width: 320px;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.btn-dismiss {
+  background: rgba(255,255,255,0.05); border: 1px solid #334155; color: #94a3b8;
+  padding: 8px 20px; border-radius: 10px; margin-top: 15px; cursor: pointer;
 }
 
-.tg-btn{
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 13px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  transition: 0.3s;
-  text-decoration: none;
-  background: var(--tg-blue);
-  color: white;
-  border: none;
+/* --- SIDEBAR --- */
+.sidebar {
+  position: fixed; top: 0; left: -280px;
+  width: 260px; height: 100%;
+  background: #070b14; z-index: 1000;
+  transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 30px 20px;
+}
+.sidebar.active { left: 0; }
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px; background: rgba(255,255,255,0.03);
+  margin-bottom: 12px; border-radius: 12px;
+  text-decoration: none; color: #cbd5e1; transition: 0.3s;
+}
+.menu-item:hover { background: var(--accent); color: white; transform: translateX(8px); }
+
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: none; z-index: 999;
 }
 
-.tg-btn:active { transform: scale(0.95); }
-.tg-btn i { font-size: 16px; }
+/* --- HEADER (Three lines on LEFT side) --- */
+.top-nav {
+  position: sticky; top: 0; background: rgba(2,6,23,0.95);
+  backdrop-filter: blur(12px); padding: 12px 18px;
+  display: flex; align-items: center; gap: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100;
+}
+.header-brand { display: flex; align-items: center; gap: 10px; }
+.nav-logo { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid var(--accent); }
+.site-title { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; white-space: nowrap; }
 
-/* CONTAINER */
-.container{
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
-  animation: fadeIn 0.5s ease;
+/* --- BATCH CARDS --- */
+.container { padding: 25px 20px; max-width: 600px; margin: auto; }
+.folder-card {
+  background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+  padding: 18px 20px; border-radius: 20px; margin-bottom: 15px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: 0.3s;
+  animation: fadeIn 0.6s ease-out backwards;
+}
+.folder-card:hover { border-color: var(--accent); transform: translateY(-3px); background: #1e293b; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.pro-icon {
+  width: 38px; height: 38px; border-radius: 50%; border: 2.5px solid var(--accent);
+  display: flex; align-items: center; justify-content: center; position: relative;
+  background: rgba(59, 130, 246, 0.1);
+}
+.pro-icon::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 2px solid var(--accent); animation: lightning 1.5s infinite;
+}
+@keyframes lightning {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.batch-title {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-    color: var(--tg-blue);
-    font-weight: 600;
+/* --- LOADER & TEST AREA --- */
+#testLoader {
+  position: absolute; inset: 0; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
 }
-
-/* FOLDER CARDS */
-.folder{
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.folder:hover{
-  background: rgba(30, 41, 59, 0.8);
-  border-color: var(--tg-blue);
-}
-
-/* BACK & CLOSE BUTTONS */
-.back-btn{
-  background: var(--card-bg);
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
-}
-
-/* DARK CLOSE BUTTON FOR TESTS */
-.close-test-btn {
-  background: var(--dark-btn) !important;
-  color: white !important;
-  border: 1px solid #334155 !important;
-  padding: 8px 15px;
-  border-radius: 8px;
-  font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-
-/* POPUP */
-.popup{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
-}
-.popup-box{
-  background: #1e293b;
-  border: 1px solid #334155;
-  padding: 25px;
-  border-radius: 20px;
-  text-align: center;
-  width: 85%;
-  max-width: 320px;
-}
-.join-pop{ background: var(--tg-blue); color: #fff; padding: 12px; border-radius: 12px; font-weight: 700; display: flex; align-items:center; justify-content:center; gap:8px; margin-top: 15px; text-decoration: none;}
-.dismiss{ background: transparent; border: none; width: 100%; padding: 12px; color: #94a3b8; margin-top: 5px; cursor: pointer;}
-
-/* TEST PAGE */
-#testPage{
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 999;
-}
-
-#loader{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #020617;
-  z-index: 10;
-}
-.loader-ring{
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 4px solid rgba(255,255,255,0.1);
-  border-top-color: var(--tg-blue);
+.ultra-ring {
+  width: 50px; height: 50px; border: 4px solid rgba(59,130,246,0.1);
+  border-top: 4px solid var(--accent); border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-@keyframes spin{ to{transform:rotate(360deg)} }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-#errorState{
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  text-align: center;
-  padding: 20px;
-}
-iframe{ width: 100%; height: 100%; border: none; display: block; }
+#testPage { display: none; position: fixed; inset: 0; background: #000; z-index: 2000; }
+iframe { width: 100%; height: 100%; border: none; }
+.btn-close { position: absolute; top: 15px; left: 15px; z-index: 2001; background: #1e293b; color: white; padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-weight: 700; }
 </style>
 </head>
-
 <body>
 
-<div class="popup" id="tgPopup">
-  <div class="popup-box">
-    <h3><i class="fa-brands fa-telegram" style="color:#0088cc"></i> Join Telegram</h3>
-    <p style="color:#94a3b8; font-size: 0.85rem; margin-top: 8px;">Saare latest tests aur updates ke liye join karein.</p>
-    <a class="join-pop" href="https://t.me/GUJARATI_NEET" target="_blank">
-      <i class="fa-brands fa-telegram"></i> Join Channel
-    </a>
-    <button class="dismiss" onclick="tgPopup.style.display='none'">Dismiss</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<div class="sidebar" id="sidebar">
+  <div style="color:var(--accent); font-weight:700; margin-bottom:25px; font-size: 1.1rem;">NEET GUJARATI MENU</div>
+  <a href="https://t.me/GUJARATI_NEET" class="menu-item" target="_blank"><i class="fa-brands fa-telegram"></i> Join Telegram</a>
+  <a href="https://wa.me/91XXXXXXXXXX" class="menu-item" target="_blank"><i class="fa-brands fa-whatsapp"></i> Join WhatsApp</a>
+  <a href="https://t.me/spidy_x100" class="menu-item" target="_blank"><i class="fa-solid fa-paper-plane"></i> Contact Me</a>
+</div>
+
+<div class="tg-popup-overlay" id="tgPopup">
+  <div class="tg-popup-content">
+    <i class="fa-brands fa-telegram" style="font-size: 50px; color: #0088cc;"></i>
+    <h2 style="margin-top:15px">Join Telegram</h2>
+    <p style="color: #94a3b8; margin-top: 10px;">For latest DPPs & Study Materials!</p>
+    <a href="https://t.me/GUJARATI_NEET" target="_blank" style="display:block; background:#0088cc; color:white; padding:15px; border-radius:12px; text-decoration:none; font-weight:700; margin-top:20px;">JOIN NOW</a>
+    <button class="btn-dismiss" onclick="closePopup()">Dismiss</button>
   </div>
 </div>
 
-<header>
-  <a class="tg-btn" href="https://t.me/GUJARATI_NEET" target="_blank">
-    <i class="fa-brands fa-telegram"></i> Join Channel
-  </a>
-  <a class="tg-btn" href="https://t.me/spidy_x100" target="_blank">
-    <i class="fa-solid fa-user-tie"></i> Owner Contact
-  </a>
-</header>
+<div class="top-nav">
+  <i class="fa-solid fa-bars-staggered" style="font-size: 22px; cursor:pointer; color: var(--accent);" onclick="toggleMenu()"></i>
+  <div class="header-brand">
+    <img src="YOUR_LOGO_URL" alt="Logo" class="nav-logo">
+    <span class="site-title">NEET GUJARATI TEST</span>
+  </div>
+</div>
 
 <div class="container" id="homePage">
-  <h2 style="margin-bottom: 20px; font-size: 1.4rem;">Batches</h2>
-  <div class="folder" onclick="openBatch(1, 'Yakeen NEET Gujarati 2026')"><span>📘 Yakeen NEET Guj 2026</span> <i class="fa-solid fa-chevron-right"></i></div>
-  <div class="folder" onclick="openBatch(2, 'Lakshya NEET Gujarati 2026')"><span>📗 Lakshya NEET Guj 2026</span> <i class="fa-solid fa-chevron-right"></i></div>
-  <div class="folder" onclick="openBatch(3, 'Yakeen NEET Gujarati 2025')"><span>📕 Yakeen NEET Guj 2025</span> <i class="fa-solid fa-chevron-right"></i></div>
-  <div class="folder" onclick="openBatch(4, 'Lakshya NEET Gujarati 2025')"><span>📙 Lakshya NEET Guj 2025</span> <i class="fa-solid fa-chevron-right"></i></div>
-  <div class="folder" onclick="openBatch(5, 'Arjuna NEET Gujarati 2025')"><span>📒 Arjuna NEET Guj 2025</span> <i class="fa-solid fa-chevron-right"></i></div>
-  <div class="folder" onclick="openBatch(6, 'Arjuna JEE Gujarati 2026')"><span>📓 Arjuna JEE Guj 2026</span> <i class="fa-solid fa-chevron-right"></i></div>
+  <div class="folder-card" onclick="openBatch(1, 'Yakeen NEET Gujarati 2026')">
+    <span>Yakeen NEET Gujarati 2026</span>
+    <div class="pro-icon"><i class="fa-solid fa-bolt" style="color:var(--accent); font-size:14px;"></i></div>
+  </div>
+  <div class="folder-card" onclick="openBatch(2, 'Lakshya NEET Gujarati 2026')">
+    <span>Lakshya NEET Gujarati 2026</span>
+    <div class="pro-icon"><i class="fa-solid fa-bolt" style="color:var(--accent); font-size:14px;"></i></div>
+  </div>
+  <div class="folder-card" onclick="openBatch(3, 'Yakeen NEET Gujarati 2025')">
+    <span>Yakeen NEET Gujarati 2025</span>
+    <div class="pro-icon"><i class="fa-solid fa-bolt" style="color:var(--accent); font-size:14px;"></i></div>
+  </div>
+  <div class="folder-card" onclick="openBatch(4, 'Lakshya NEET Gujarati 2025')">
+    <span>Lakshya NEET Gujarati 2025</span>
+    <div class="pro-icon"><i class="fa-solid fa-bolt" style="color:var(--accent); font-size:14px;"></i></div>
+  </div>
+  <div class="folder-card" onclick="openBatch(5, 'Arjuna NEET Gujarati 2025')">
+    <span>Arjuna NEET Gujarati 2025</span>
+    <div class="pro-icon"><i class="fa-solid fa-bolt" style="color:var(--accent); font-size:14px;"></i></div>
+  </div>
+  <div class="folder-card" onclick="openBatch(6, 'Arjuna JEE Gujarati 2026')">
+    <span>Arjuna JEE Gujarati 2026</span>
+    <div class="pro-icon"><i class="fa-solid fa-bolt" style="color:var(--accent); font-size:14px;"></i></div>
+  </div>
 </div>
 
 <div class="container" id="subPage" style="display:none">
-  <div class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> &nbsp; Back</div>
-  <div class="batch-title" id="selectedBatchName"></div>
-  <div class="folder" onclick="openTest('dpp')"><span><i class="fa-solid fa-book-open"></i> &nbsp; DPP Tests</span> <i class="fa-solid fa-chevron-right"></i></div>
-  <div class="folder" onclick="openTest('paper')"><span><i class="fa-solid fa-file-lines"></i> &nbsp; Test Papers</span> <i class="fa-solid fa-chevron-right"></i></div>
+  <div style="color:var(--accent); font-weight:700; margin-bottom:20px; cursor:pointer;" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> BACK</div>
+  <h3 id="selectedBatchName" style="margin-bottom:20px; color:#94a3b8"></h3>
+  <div class="folder-card" onclick="openTest('dpp')"><span>DPP Tests</span><div class="pro-icon"><i class="fa-solid fa-book-open" style="color:var(--accent); font-size:14px;"></i></div></div>
+  <div class="folder-card" onclick="openTest('paper')"><span>Full Test Papers</span><div class="pro-icon"><i class="fa-solid fa-file-lines" style="color:var(--accent); font-size:14px;"></i></div></div>
 </div>
 
 <div id="testPage">
-  <div style="position: absolute; top: 15px; left: 15px; z-index: 100;">
-      <div class="back-btn close-test-btn" onclick="goSub()">
-          <i class="fa-solid fa-xmark"></i> &nbsp; CLOSE TEST
-      </div>
-  </div>
-  
-  <div id="loader">
-    <div class="loader-ring"></div>
-    <p style="margin-top: 15px; color: #94a3b8;">Loading Secure Test...</p>
-  </div>
-
-  <div id="errorState">
-      <i class="fa-solid fa-circle-exclamation" style="font-size: 50px; color: #ef4444; margin-bottom: 15px;"></i>
-      <h2>Test Not Available</h2>
-      <p style="color: #94a3b8; margin-top: 10px;">Yeh test abhi tak upload nahi kiya gaya hai.</p>
-      <div class="back-btn" onclick="goSub()" style="margin-top: 25px; background: var(--tg-blue); border:none;">Go Back</div>
-  </div>
-
-  <iframe id="testFrame"></iframe>
+  <button class="btn-close" onclick="closeTest()">CLOSE</button>
+  <div id="testLoader"><div class="ultra-ring"></div><p style="margin-top:20px; color:#94a3b8">LOADING TEST...</p></div>
+  <iframe id="testFrame" onload="document.getElementById('testLoader').style.display='none'"></iframe>
 </div>
 
 <script>
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const tgPopup = document.getElementById('tgPopup');
+const homePage = document.getElementById('homePage');
+const subPage = document.getElementById('subPage');
+const testPage = document.getElementById('testPage');
+const testFrame = document.getElementById('testFrame');
 let currentBatch = 0;
 
-window.onload = ()=>setTimeout(()=>tgPopup.style.display="flex",800);
-
-function openBatch(id, name){
-  currentBatch=id;
-  document.getElementById('selectedBatchName').innerText = name;
-  homePage.style.display="none";
-  subPage.style.display="block";
+window.onload = () => { setTimeout(() => { tgPopup.style.display = 'flex'; }, 1500); };
+function closePopup() { tgPopup.style.display = 'none'; }
+function toggleMenu() {
+  sidebar.classList.toggle('active');
+  overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
 }
-
-function openTest(type){
-  subPage.style.display="none";
-  testPage.style.display="block";
-  
-  const links={
-    1:{dpp:"https://quizard-v3-new-250acee02d82.herokuapp.com/dpp_batch_subjects/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026",
-paper:"https://quizard-v3-new-250acee02d82.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test"},
-    2:{dpp:"https://quizard-v3-new-250acee02d82.herokuapp.com/dpp_batch_subjects/677943e2920e596fe7f0e83d/Lakshya%20NEET%20Gujarati%202026",
-       paper:"https://quizard-v3-new-250acee02d82.herokuapp.com/batch/677943e2920e596fe7f0e83d/Lakshya%20NEET%20Gujarati%202026/batch_test"},
-    3:{dpp:"#",paper:"https://quizard-v3-new-250acee02d82.herokuapp.com/batch/65dc520f8862110018b2ab1d/Yakeen%20NEET%20Gujarati%202025/batch_test"},
-    4:{dpp:"#",paper:"https://quizard-v3-new-250acee02d82.herokuapp.com/batch/65db6ebbceb65f001847a56e/Lakshya%20NEET%20Gujarati%202025/batch_test"},
-    5:{dpp:"https://quizard-v3-new-250acee02d82.herokuapp.com/dpp_batch_subjects/65dc4c1981825400181e4756/Arjuna%20NEET%20Gujarati%202025",
-       paper:""},
-    6:{dpp:"#",paper:"https://quizard-v3-new-250acee02d82.herokuapp.com/batch/65dc4c1981825400181e4756/Arjuna%20NEET%20Gujarati%202025/batch_test"}
+function openBatch(id, name) {
+  currentBatch = id;
+  document.getElementById('selectedBatchName').innerText = name;
+  homePage.style.display = 'none';
+  subPage.style.display = 'block';
+}
+function goHome() { subPage.style.display = 'none'; homePage.style.display = 'block'; }
+function openTest(type) {
+  const links = {
+    1: { dpp: "https://quizard-v3-new-250acee02d82.herokuapp.com/dpp_batch_subjects/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026", paper: "https://quizard-v3-new-250acee02d82.herokuapp.com/batch/67794097d2fc0457a534fc40/Yakeen%20NEET%20Gujarati%202026/batch_test" },
+    2: { dpp: "https://quizard-v3-new-250acee02d82.herokuapp.com/dpp_batch_subjects/677943e2920e596fe7f0e83d/Lakshya%20NEET%20Gujarati%202026", paper: "https://quizard-v3-new-250acee02d82.herokuapp.com/batch/677943e2920e596fe7f0e83d/Lakshya%20NEET%20Gujarati%202026/batch_test" },
+    3: { dpp: "#", paper: "https://quizard-v3-new-250acee02d82.herokuapp.com/batch/65dc520f8862110018b2ab1d/Yakeen%20NEET%20Gujarati%202025/batch_test" },
+    4: { dpp: "#", paper: "https://quizard-v3-new-250acee02d82.herokuapp.com/batch/65db6ebbceb65f001847a56e/Lakshya%20NEET%20Gujarati%202025/batch_test" },
+    5: { dpp: "https://quizard-v3-new-250acee02d82.herokuapp.com/dpp_batch_subjects/65dc4c1981825400181e4756/Arjuna%20NEET%20Gujarati%202025", paper: "#" },
+    6: { dpp: "#", paper: "https://quizard-v3-new-250acee02d82.herokuapp.com/batch/65dc4c1981825400181e4756/Arjuna%20NEET%20Gujarati%202025/batch_test" }
   };
-
-  const targetLink = links[currentBatch][type];
-
-  if(targetLink === "#") {
-      loader.style.display = "none";
-      testFrame.style.display = "none";
-      errorState.style.display = "flex";
+  const url = links[currentBatch][type];
+  if(url !== "#") {
+    document.getElementById('testLoader').style.display = 'flex';
+    testFrame.src = url;
+    testPage.style.display = 'block';
   } else {
-      errorState.style.display = "none";
-      testFrame.style.display = "block";
-      loader.style.display = "flex";
-      testFrame.src = targetLink;
-      testFrame.onload = () => loader.style.display = "none";
+    alert("Test Not Available yet!");
   }
 }
-
-function goHome(){
-  subPage.style.display="none";
-  homePage.style.display="block";
-}
-
-function goSub(){
-  testFrame.src = "";
-  testPage.style.display = "none";
-  subPage.style.display = "block";
-}
+function closeTest() { testPage.style.display = 'none'; testFrame.src = ""; }
 </script>
 
 </body>
